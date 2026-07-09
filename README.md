@@ -25,6 +25,15 @@ Each guess shows a row of colored cells, one per property, telling you how that 
 
 When a clue isn't an exact match, it tells you which way to move your *next* guess (e.g. "Larger", "More Advice", "More Uniform") rather than just describing where your last guess landed — think of it as pointing, not just reporting.
 
+## Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+Then open `http://localhost:3000` in your browser.
+
 ## Classes currently in the game
 
 - DLOGTIME
@@ -136,15 +145,6 @@ When a clue isn't an exact match, it tells you which way to move your *next* gue
 - AH
 
 More classes are being added over time.
-
-## Getting started
-
-```bash
-npm install
-npm run dev
-```
-
-Then open `http://localhost:3000` in your browser.
 
 ---
 
