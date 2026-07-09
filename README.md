@@ -1,29 +1,29 @@
 # Complexle
 
-Complexle is a Wordle-style guessing game — but instead of guessing a five-letter word, you're guessing a **computational complexity class**, like P, NP, or PSPACE. Every guess tells you how it relates to the secret class across a handful of properties, so you can close in on the answer guess by guess.
+Complexle is a Wordle-style guessing game, but instead of guessing a five-letter word, you're guessing a **computational complexity class**, like P, NP, or PSPACE. Every guess tells you how it relates to the secret class across a handful of properties, so you can close in on the answer guess by guess.
 
 ## How to play
 
 - **Daily**: everyone gets the same secret class each day.
-- **Practice**: unlimited random classes — hit "New practice game" to try another.
+- **Practice**: unlimited random classes just hit "New practice game" to try another.
 - Type a class name (or a well-known nickname for it) into the box. Suggestions pop up as you type, so you don't need to remember exact spelling or capitalization.
-- You get **6 guesses**. Every property is revealed for every guess — nothing is hidden or doled out gradually, so you always have full information to plan your next guess.
-- Some classes go by more than one name because they're mathematically *proven* to be exactly the same class — guessing either name wins. For example, IP and PSPACE are proven equal, so if the secret class is IP, guessing "PSPACE" wins too.
+- You get **6 guesses**. Every property is revealed for every guess, so you always have full information to plan your next guess.
+- Some classes go by more than one name because they're mathematically *proven* to be exactly the same class, and guessing either name wins. For example, IP and PSPACE are proven equal, so if the secret class is IP, guessing "PSPACE" wins too.
 - If what you type doesn't match a known class, you'll get an error and it won't cost you a guess. Guessing the same class twice is likewise free (but pointless).
 
 ## Reading the clues
 
 Each guess shows a row of colored cells, one per property, telling you how that property compares to the secret class:
 
-- **Inclusion** — is your guess a *smaller* class, a *larger* class, or does it have no known containment relationship with the secret class at all ("Incomparable")?
-- **Model** — what kind of "computer" defines the class: an ordinary machine, a machine that guesses (nondeterministic), a machine that flips coins (probabilistic), a circuit, a quantum computer, an interactive back-and-forth between a prover and a verifier, "everything reducible to a fixed problem," a logical formula, and so on. A class can match on more than one of these if it has more than one valid description.
-- **Type** — is it a yes/no decision problem, a function problem (including counting problems, like #P), or a communication problem?
-- **Advice** — how much extra "cheat sheet" information (if any) the class's machine is allowed to have per input length, from none up to unbounded.
-- **Uniformity** — for circuit-based classes, how simple the rule generating the circuits has to be. Shows "N/A" for classes that aren't defined by a circuit family at all — that's not a rank, just "this question doesn't apply here."
-- **Oracle** — does the class's definition get to "ask questions" of another class for free, and if so, does asking itself change anything?
-- **Promise** — is the class defined for every possible input, or only over a restricted set of inputs?
+- **Inclusion**: is your guess a *smaller* class, a *larger* class, or does it have no known containment relationship with the secret class at all ("Incomparable")?
+- **Model**: what kind of "computer" defines the class: an ordinary machine, a machine that guesses (nondeterministic), a machine that flips coins (probabilistic), a circuit, a quantum computer, an interactive back-and-forth between a prover and a verifier, "everything reducible to a fixed problem," a logical formula, and so on. A class can match on more than one of these if it has more than one valid description.
+- **Type**: is it a yes/no decision problem, a function problem (including counting problems, like #P), or a communication problem?
+- **Advice**: how much extra "cheat sheet" information (if any) the class's machine is allowed to have per input length, from none up to unbounded.
+- **Uniformity**: for circuit-based classes, how simple the rule generating the circuits has to be. Shows "N/A" for classes that are already defined on uniform models.
+- **Oracle**: does the class's definition get to "ask questions" of another class for free, and if so, does asking itself change anything?
+- **Promise**: is the class defined for every possible input, or only over a restricted set of inputs?
 
-When a clue isn't an exact match, it tells you which way to move your *next* guess (e.g. "Larger", "More Advice", "More Uniform") rather than just describing where your last guess landed — think of it as pointing, not just reporting.
+When a clue isn't an exact match, it tells you which way to move your *next* guess (e.g. "Larger", "More Advice", "More Uniform") rather than just describing where your last guess landed.
 
 ## Getting started
 
