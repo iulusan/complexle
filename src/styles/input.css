@@ -1,0 +1,86 @@
+@import "tailwindcss";
+@source "../**/*.ts";
+
+@keyframes guess-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guess-row-enter {
+  animation: guess-row-in 300ms ease-out;
+}
+
+@keyframes result-modal-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes result-modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes result-modal-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+}
+
+@keyframes result-modal-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+#result-modal::backdrop,
+#how-to-play-modal::backdrop {
+  background: rgb(15 23 42 / 0.5);
+  animation: result-modal-backdrop-in 200ms ease-out;
+}
+
+/* Tailwind's preflight resets margin to 0 on every element, which overrides the browser's
+   default `dialog:modal { margin: auto }` centering rule — restore centering explicitly. */
+#result-modal,
+#how-to-play-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: result-modal-in 200ms ease-out;
+}
+
+/* Applied briefly before actually closing (see closeModalWithTransition in layout.ts), so the
+   modal fades/scales back out instead of vanishing the instant close() is called. */
+#result-modal.closing,
+#how-to-play-modal.closing {
+  animation: result-modal-out 150ms ease-in forwards;
+}
+
+#result-modal.closing::backdrop,
+#how-to-play-modal.closing::backdrop {
+  animation: result-modal-backdrop-out 150ms ease-in forwards;
+}

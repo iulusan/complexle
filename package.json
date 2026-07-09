@@ -1,0 +1,31 @@
+{
+  "name": "complexle",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Wordle-style guessing game for computational complexity classes.",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "concurrently -n server,css -k \"tsx watch src/server.ts\" \"tailwindcss -i ./src/styles/input.css -o ./public/styles.css --watch\"",
+    "dev:server": "tsx watch src/server.ts",
+    "dev:css": "tailwindcss -i ./src/styles/input.css -o ./public/styles.css --watch",
+    "build": "npm run build:css && tsc",
+    "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/styles.css --minify",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.19.2",
+    "katex": "^0.17.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express": "^4.17.21",
+    "@types/katex": "^0.16.8",
+    "@types/node": "^20.12.12",
+    "concurrently": "^8.2.2",
+    "tailwindcss": "^4.1.0",
+    "tsx": "^4.15.6",
+    "typescript": "^5.4.5"
+  }
+}
