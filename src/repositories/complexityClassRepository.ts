@@ -1072,6 +1072,7 @@ const INCLUSION_EDGES: InclusionEdge[] = [
   { from: "qma", to: "qam" },
   { from: "qma", to: "pp" },
   { from: "am", to: "qam" },
+  { from: "qam", to: "qip" },
   { from: "p-poly", to: "np-poly" },
   { from: "bpp", to: "pzk" },
   { from: "pzk", to: "szk" },
