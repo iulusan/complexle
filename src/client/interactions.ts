@@ -11,6 +11,9 @@ declare global {
     selectGuessSuggestion: (button: HTMLElement) => void;
     handleGuessKeydown: (event: KeyboardEvent) => boolean;
     __GUESS_ALIASES__?: Record<string, string>;
+    // Set by main.ts — cancels its debounced suggestions fetch, so selecting/dismissing a
+    // suggestion here can't be raced by that fetch re-populating the box afterward.
+    cancelPendingSuggestions?: () => void;
   }
 }
 
@@ -39,6 +42,7 @@ function setGuessHighlight(index: number): void {
 }
 
 function clearGuessSuggestions(): void {
+  window.cancelPendingSuggestions?.();
   const box = document.getElementById("guess-suggestions");
   if (box) box.innerHTML = "";
   window.guessHighlightIndex = -1;

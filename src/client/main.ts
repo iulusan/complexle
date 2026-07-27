@@ -38,12 +38,24 @@ function executeEmbeddedScripts(root: ParentNode): void {
   });
 }
 
+// Unlike htmx (which aborts a pending request/trigger when its element is removed from the
+// DOM), a plain setTimeout keeps running regardless — so any render that might destroy the
+// current #guess-suggestions box has to cancel a pending debounced fetch first, or that fetch
+// re-queries by id later and populates whatever *new* box now has that id with stale results.
+let suggestTimer: number | undefined;
+
+function cancelPendingSuggestions(): void {
+  window.clearTimeout(suggestTimer);
+}
+
 function renderInto(el: HTMLElement, html: string): void {
+  cancelPendingSuggestions();
   el.innerHTML = html;
   executeEmbeddedScripts(el);
 }
 
 function renderOuterInto(el: HTMLElement, html: string): void {
+  cancelPendingSuggestions();
   const id = el.id;
   el.outerHTML = html;
   const fresh = id ? document.getElementById(id) : null;
@@ -108,11 +120,10 @@ document.addEventListener("click", (event) => {
 
 // Mirrors searchSuggestions in gameController.ts, debounced to match the server form's
 // hx-trigger="input changed delay:150ms".
-let suggestTimer: number | undefined;
 document.addEventListener("input", (event) => {
   const input = event.target;
   if (!(input instanceof HTMLInputElement) || input.id !== "guess-input") return;
-  window.clearTimeout(suggestTimer);
+  cancelPendingSuggestions();
   suggestTimer = window.setTimeout(() => {
     const box = document.getElementById("guess-suggestions");
     if (box) renderInto(box, suggestionsView(classRepo.findMatches(input.value)));
@@ -120,6 +131,10 @@ document.addEventListener("input", (event) => {
 });
 
 window.addEventListener("popstate", () => renderApp(currentMode()));
+
+// So interactions.ts's clearGuessSuggestions (arrow-key select / Enter-autocorrect) can cancel
+// the same pending timer — otherwise selecting a suggestion fast enough has the identical race.
+window.cancelPendingSuggestions = cancelPendingSuggestions;
 
 installInteractions();
 if (location.pathname === BASE || location.pathname === `${BASE}index.html`) {
