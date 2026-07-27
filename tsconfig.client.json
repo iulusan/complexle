@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      // Mirrors vite.config.ts's resolve.alias for "crypto" — gameService.ts imports Node's
+      // randomUUID from "crypto" unmodified; both tsc and Vite redirect that specifier to the
+      // same browser shim.
+      "crypto": ["src/client/shims/crypto.ts"]
+    }
+  },
+  "include": ["src/client"],
+  "exclude": []
+}
