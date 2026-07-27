@@ -22,7 +22,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
+      # npm install rather than npm ci: the wasm32-wasi fallback variants of Tailwind's oxide
+      # engine and Rolldown (never actually used — we always run on a real platform binary) pull
+      # in @emnapi/* with loose ranges that publish new patches often enough to make the lockfile
+      # go stale between when it's committed and when this runs. npm install reconciles that
+      # instead of hard-failing like npm ci does.
+      - run: npm install --no-audit --no-fund
       - run: npm run build:client
       # GitHub Pages has no server-side routing, so a direct load of /games/practice (or a
       # refresh) 404s without this — GitHub Pages serves 404.html's body as a fallback for any
