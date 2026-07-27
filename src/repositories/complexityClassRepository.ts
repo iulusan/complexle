@@ -1127,6 +1127,9 @@ const INCLUSION_EDGES: InclusionEdge[] = [
   { from: "p-log", to: "p-poly" },
   { from: "p-poly", to: "exp-poly" },
   { from: "exp", to: "exp-poly" },
+  // NP ⊆ EXP already holds, and advice-relativization preserves inclusion (an EXP/poly machine can
+  // brute-force the NP/poly certificate in exponential time using the same advice string).
+  { from: "np-poly", to: "exp-poly" },
   { from: "pspace", to: "exp" },
   { from: "exp", to: "nexp" },
   { from: "nexp", to: "expspace" },
