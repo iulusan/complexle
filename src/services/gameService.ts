@@ -145,9 +145,7 @@ function getTodayDateKey(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-// FNV-1a: a same day-to-day increment in dateKey (e.g. "...-27" -> "...-28") should land on an
-// unrelated roster index, not the next one — a plain sum-of-char-codes hash moves by exactly the
-// same delta as the input each time, so consecutive days walked the roster in declaration order.
+// FNV-1a
 function fnv1aHash(input: string): number {
   let hash = 0x811c9dc5;
   for (let i = 0; i < input.length; i++) {
