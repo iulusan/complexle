@@ -137,11 +137,20 @@ export class GameService {
 
   private pickDailyTargetId(dateKey: string): string {
     const classes = this.classRepo.getAll();
-    const hash = [...dateKey].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-    return classes[hash % classes.length].id;
+    return classes[fnv1aHash(dateKey) % classes.length].id;
   }
 }
 
 function getTodayDateKey(): string {
   return new Date().toISOString().slice(0, 10);
+}
+
+// FNV-1a
+function fnv1aHash(input: string): number {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < input.length; i++) {
+    hash ^= input.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
 }
