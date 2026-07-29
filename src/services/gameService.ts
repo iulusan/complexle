@@ -137,11 +137,22 @@ export class GameService {
 
   private pickDailyTargetId(dateKey: string): string {
     const classes = this.classRepo.getAll();
-    const hash = [...dateKey].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-    return classes[hash % classes.length].id;
+    return classes[fnv1aHash(dateKey) % classes.length].id;
   }
 }
 
 function getTodayDateKey(): string {
   return new Date().toISOString().slice(0, 10);
+}
+
+// FNV-1a: a same day-to-day increment in dateKey (e.g. "...-27" -> "...-28") should land on an
+// unrelated roster index, not the next one — a plain sum-of-char-codes hash moves by exactly the
+// same delta as the input each time, so consecutive days walked the roster in declaration order.
+function fnv1aHash(input: string): number {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < input.length; i++) {
+    hash ^= input.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
 }
