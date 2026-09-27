@@ -1,5 +1,6 @@
 import { GameState, GuessResult, PropertyFeedback } from "../domain/game";
 import { PropertyDefinition } from "../domain/property";
+import { feedbackIcon } from "./feedbackIcon";
 import { mathSpan } from "./latex";
 
 /** Shown once a game ends — reuses the same per-property colors as the guess table, but as a
@@ -46,10 +47,17 @@ function gridRow(guess: GuessResult, properties: PropertyDefinition[], isLucky: 
   const squares = properties
     .map((p) => {
       const feedback = guess.properties.find((f) => f.propertyId === p.id);
-      return `<span class="h-6 w-6 rounded-sm ${isLucky ? "bg-violet-500" : squareClasses(feedback?.result)}"></span>`;
+      // White symbols read on the saturated squares; the pale grey one needs a dark symbol instead.
+      const iconColor = isLucky || !isGreySquare(feedback?.result) ? "text-white" : "text-slate-600";
+      const icon = feedbackIcon(feedback?.result, isLucky, "h-4 w-4", iconColor);
+      return `<span class="flex h-6 w-6 items-center justify-center rounded-sm ${isLucky ? "bg-violet-500" : squareClasses(feedback?.result)}">${icon}</span>`;
     })
     .join("");
   return `<div class="flex justify-center gap-2">${squares}</div>`;
+}
+
+function isGreySquare(result?: PropertyFeedback["result"]): boolean {
+  return squareClasses(result) === "bg-slate-300";
 }
 
 function squareClasses(result?: PropertyFeedback["result"]): string {
