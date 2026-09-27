@@ -7,6 +7,12 @@ export function layout(title: string, body: string): string {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${escapeHtml(title)}</title>
+  <script>
+    // Applied before first paint so a stored colorblind-mode preference never flashes off.
+    try {
+      if (localStorage.getItem("complexle:colorblind") === "1") document.documentElement.classList.add("colorblind");
+    } catch {}
+  </script>
   <link rel="stylesheet" href="/styles.css" />
   <!-- Styles only the server-rendered KaTeX HTML (see src/views/latex.ts) — no client-side KaTeX JS needed. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" />
@@ -26,6 +32,16 @@ export function layout(title: string, body: string): string {
         { once: true }
       );
       dialog.classList.add("closing");
+    }
+
+    // Colorblind mode is purely a class on <html> (see the colorblind variant in input.css), so
+    // flipping it needs no re-render — just remember the choice for next visit.
+    function toggleColorblindMode() {
+      const on = document.documentElement.classList.toggle("colorblind");
+      try {
+        localStorage.setItem("complexle:colorblind", on ? "1" : "0");
+      } catch {}
+      if (on) document.getElementById("colorblind-modal")?.showModal();
     }
 
     // Index of the arrow-key-highlighted suggestion, or -1 when none is highlighted (either

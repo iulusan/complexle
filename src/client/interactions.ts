@@ -8,6 +8,7 @@ declare global {
   interface Window {
     guessHighlightIndex: number;
     closeModalWithTransition: (id: string) => void;
+    toggleColorblindMode: () => void;
     selectGuessSuggestion: (button: HTMLElement) => void;
     handleGuessKeydown: (event: KeyboardEvent) => boolean;
     __GUESS_ALIASES__?: Record<string, string>;
@@ -29,6 +30,16 @@ function closeModalWithTransition(id: string): void {
     { once: true }
   );
   dialog.classList.add("closing");
+}
+
+const COLORBLIND_KEY = "complexle:colorblind";
+
+function toggleColorblindMode(): void {
+  const on = document.documentElement.classList.toggle("colorblind");
+  try {
+    localStorage.setItem(COLORBLIND_KEY, on ? "1" : "0");
+  } catch {}
+  if (on) (document.getElementById("colorblind-modal") as HTMLDialogElement | null)?.showModal();
 }
 
 function getGuessSuggestionButtons(): HTMLButtonElement[] {
@@ -100,6 +111,11 @@ function handleGuessKeydown(event: KeyboardEvent): boolean {
 export function installInteractions(): void {
   window.guessHighlightIndex = -1;
   window.closeModalWithTransition = closeModalWithTransition;
+  window.toggleColorblindMode = toggleColorblindMode;
+  // Runs before main.ts's first render (the layout.ts version does this in <head> instead).
+  try {
+    if (localStorage.getItem(COLORBLIND_KEY) === "1") document.documentElement.classList.add("colorblind");
+  } catch {}
   window.selectGuessSuggestion = selectGuessSuggestion;
   window.handleGuessKeydown = handleGuessKeydown;
 }

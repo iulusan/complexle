@@ -1,6 +1,7 @@
 import { GameMode, GameState, GuessResult, PropertyFeedback } from "../domain/game";
 import { PropertyDefinition } from "../domain/property";
 import { escapeHtml } from "./escapeHtml";
+import { feedbackIcon } from "./feedbackIcon";
 import { mathSpan } from "./latex";
 import { resultModalView } from "./resultModalView";
 
@@ -58,7 +59,9 @@ function guessRow(guess: GuessResult, properties: PropertyDefinition[], isLatest
   const cells = properties
     .map((p) => {
       const feedback = guess.properties.find((f) => f.propertyId === p.id);
-      return `<td class="${isLucky ? LUCKY_CELL_CLASSES : cellClasses(feedback?.result)}">${describeFeedback(feedback, p)}</td>`;
+      // Icon and label share a flex row so the icon stays beside the text even when it wraps.
+      const icon = feedbackIcon(feedback?.result, isLucky, "h-4 w-4");
+      return `<td class="${isLucky ? LUCKY_CELL_CLASSES : cellClasses(feedback?.result)}"><span class="inline-flex items-center gap-1.5"><span>${describeFeedback(feedback, p)}</span>${icon}</span></td>`;
     })
     .join("");
   const rowClasses = [isLucky ? "bg-violet-50" : guess.correct ? "bg-emerald-50" : "", isLatest ? "guess-row-enter" : ""]
